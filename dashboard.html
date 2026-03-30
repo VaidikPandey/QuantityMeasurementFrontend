@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard - Quantity Measurement App</title>
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/dashboard.css" />
+  </head>
+  <body class="dashboard-page">
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="navbar-brand">⚖️ Quantity Measurement</div>
+      <div class="navbar-right">
+        <div class="user-info">
+          <div class="user-avatar" id="user-avatar">V</div>
+          <span class="user-name" id="user-name">User</span>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()">
+          <span id="theme-icon">☀️</span>
+        </button>
+        <button class="btn-logout" onclick="logout()">Logout</button>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="dashboard-content">
+      <!-- Welcome -->
+      <div class="welcome-section">
+        <h2>Welcome , <span id="welcome-name">User</span>! 👋</h2>
+        <p>Perform quantity measurements and conversions below.</p>
+      </div>
+
+      <!-- Operations Grid -->
+      <div class="operations-grid">
+        <!-- Compare Card -->
+        <div class="operation-card">
+          <div class="operation-header">
+            <div class="operation-icon">🔍</div>
+            <div>
+              <div class="operation-title">Compare</div>
+              <div class="operation-subtitle">
+                Check if two quantities are equal
+              </div>
+            </div>
+          </div>
+          <form id="compare-form">
+            <div class="form-group">
+              <label>First Quantity</label>
+              <div style="display: flex; gap: 8px">
+                <input
+                  type="number"
+                  id="compare-value1"
+                  placeholder="Value"
+                  step="any"
+                  required
+                />
+                <select id="compare-unit1">
+                  <option value="FEET">Feet</option>
+                  <option value="INCH">Inch</option>
+                  <option value="YARDS">Yards</option>
+                  <option value="CENTIMETER">CM</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Second Quantity</label>
+              <div style="display: flex; gap: 8px">
+                <input
+                  type="number"
+                  id="compare-value2"
+                  placeholder="Value"
+                  step="any"
+                  required
+                />
+                <select id="compare-unit2">
+                  <option value="FEET">Feet</option>
+                  <option value="INCH">Inch</option>
+                  <option value="YARDS">Yards</option>
+                  <option value="CENTIMETER">CM</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" data-text="Compare">
+              Compare
+            </button>
+          </form>
+          <div class="result-box" id="compare-result">
+            <div class="result-label">Result</div>
+            <div class="result-value"></div>
+          </div>
+        </div>
+
+        <!-- Add Card -->
+        <div class="operation-card">
+          <div class="operation-header">
+            <div class="operation-icon">➕</div>
+            <div>
+              <div class="operation-title">Add</div>
+              <div class="operation-subtitle">Add two quantities together</div>
+            </div>
+          </div>
+          <form id="add-form">
+            <div class="form-group">
+              <label>First Quantity</label>
+              <div style="display: flex; gap: 8px">
+                <input
+                  type="number"
+                  id="add-value1"
+                  placeholder="Value"
+                  step="any"
+                  required
+                />
+                <select id="add-unit1">
+                  <option value="FEET">Feet</option>
+                  <option value="INCH">Inch</option>
+                  <option value="YARDS">Yards</option>
+                  <option value="CENTIMETER">CM</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Second Quantity</label>
+              <div style="display: flex; gap: 8px">
+                <input
+                  type="number"
+                  id="add-value2"
+                  placeholder="Value"
+                  step="any"
+                  required
+                />
+                <select id="add-unit2">
+                  <option value="INCH">Inch</option>
+                  <option value="FEET">Feet</option>
+                  <option value="YARDS">Yards</option>
+                  <option value="CENTIMETER">CM</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" data-text="Add">
+              Add
+            </button>
+          </form>
+          <div class="result-box" id="add-result">
+            <div class="result-label">Result</div>
+            <div class="result-value"></div>
+          </div>
+        </div>
+
+        <!-- Subtract Card -->
+        <div class="operation-card">
+          <div class="operation-header">
+            <div class="operation-icon">➖</div>
+            <div>
+              <div class="operation-title">Subtract</div>
+              <div class="operation-subtitle">
+                Subtract one quantity from another
+              </div>
+            </div>
+          </div>
+          <form id="subtract-form">
+            <div class="form-group">
+              <label>First Quantity</label>
+              <div style="display: flex; gap: 8px">
+                <input
+                  type="number"
+                  id="subtract-value1"
+                  placeholder="Value"
+                  step="any"
+                  required
+                />
+                <select id="subtract-unit1">
+                  <option value="FEET">Feet</option>
+                  <option value="INCH">Inch</option>
+                  <option value="YARDS">Yards</option>
+                  <option value="CENTIMETER">CM</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Second Quantity</label>
+              <div style="display: flex; gap: 8px">
+                <input
+                  type="number"
+                  id="subtract-value2"
+                  placeholder="Value"
+                  step="any"
+                  required
+                />
+                <select id="subtract-unit2">
+                  <option value="INCH">Inch</option>
+                  <option value="FEET">Feet</option>
+                  <option value="YARDS">Yards</option>
+                  <option value="CENTIMETER">CM</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" data-text="Subtract">
+              Subtract
+            </button>
+          </form>
+          <div class="result-box" id="subtract-result">
+            <div class="result-label">Result</div>
+            <div class="result-value"></div>
+          </div>
+        </div>
+
+        <!-- Divide Card -->
+        <div class="operation-card">
+          <div class="operation-header">
+            <div class="operation-icon">➗</div>
+            <div>
+              <div class="operation-title">Divide</div>
+              <div class="operation-subtitle">
+                Divide one quantity by another
+              </div>
+            </div>
+          </div>
+          <form id="divide-form">
+            <div class="form-group">
+              <label>First Quantity</label>
+              <div style="display: flex; gap: 8px">
+                <input
+                  type="number"
+                  id="divide-value1"
+                  placeholder="Value"
+                  step="any"
+                  required
+                />
+                <select id="divide-unit1">
+                  <option value="FEET">Feet</option>
+                  <option value="INCH">Inch</option>
+                  <option value="YARDS">Yards</option>
+                  <option value="CENTIMETER">CM</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Second Quantity</label>
+              <div style="display: flex; gap: 8px">
+                <input
+                  type="number"
+                  id="divide-value2"
+                  placeholder="Value"
+                  step="any"
+                  required
+                />
+                <select id="divide-unit2">
+                  <option value="FEET">Feet</option>
+                  <option value="INCH">Inch</option>
+                  <option value="YARDS">Yards</option>
+                  <option value="CENTIMETER">CM</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" data-text="Divide">
+              Divide
+            </button>
+          </form>
+          <div class="result-box" id="divide-result">
+            <div class="result-label">Result</div>
+            <div class="result-value"></div>
+          </div>
+        </div>
+
+        <!-- Convert Card -->
+        <div class="operation-card">
+          <div class="operation-header">
+            <div class="operation-icon">🔄</div>
+            <div>
+              <div class="operation-title">Convert</div>
+              <div class="operation-subtitle">Convert between units</div>
+            </div>
+          </div>
+          <form id="convert-form">
+            <div class="form-group">
+              <label>Value</label>
+              <input
+                type="number"
+                id="convert-value"
+                placeholder="Enter value"
+                step="any"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label>From</label>
+              <select id="convert-from">
+                <option value="FEET">Feet</option>
+                <option value="INCH">Inch</option>
+                <option value="YARDS">Yards</option>
+                <option value="CENTIMETER">CM</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>To</label>
+              <select id="convert-to">
+                <option value="INCH">Inch</option>
+                <option value="FEET">Feet</option>
+                <option value="YARDS">Yards</option>
+                <option value="CENTIMETER">CM</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-primary" data-text="Convert">
+              Convert
+            </button>
+          </form>
+          <div class="result-box" id="convert-result">
+            <div class="result-label">Result</div>
+            <div class="result-value"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- History Section -->
+      <div class="history-section">
+        <div class="history-header">
+          <h3>📜 Recent History</h3>
+          <button
+            class="btn btn-secondary"
+            onclick="loadHistory()"
+            style="padding: 8px 16px; font-size: 0.85rem"
+          >
+            Refresh
+          </button>
+        </div>
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Operation</th>
+              <th>Type</th>
+              <th>Result</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody id="history-body">
+            <tr>
+              <td
+                colspan="4"
+                style="text-align: center; color: var(--text-muted)"
+              >
+                Loading history...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/dashboard.js"></script>
+  </body>
+</html>
