@@ -1,7 +1,7 @@
 // API Configuration
 const CONFIG = {
     // Point to your backend (currently running on port 8080)
-    BASE_URL: 'http://localhost:8080',
+    BASE_URL: 'https://quantitymeasurementapp-production-7653.up.railway.app',
     ENDPOINTS: {
         REGISTER: '/auth/register',
         LOGIN: '/auth/login',
