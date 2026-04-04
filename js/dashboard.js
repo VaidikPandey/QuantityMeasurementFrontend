@@ -2,21 +2,17 @@
 
 document.addEventListener('DOMContentLoaded', () => {
 
-    // check if coming from Google login
     const urlParams = new URLSearchParams(window.location.search);
     const token = urlParams.get('token');
     const name = urlParams.get('name');
     const email = urlParams.get('email');
 
     if (token) {
-        // save token and user from URL params
         setToken(token);
         setUser({ name, email });
-        // clean URL
         window.history.replaceState({}, document.title, '/dashboard.html');
     }
 
-    // redirect to login if not logged in
     if (!isLoggedIn()) {
         window.location.href = 'index.html';
         return;
@@ -24,20 +20,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadUserInfo();
     setupOperations();
-    loadHistory();
+    loadHistoryOptimized();
 });
 
-// load user info in navbar
+// load user info
 function loadUserInfo() {
     const user = getUser();
     if (user) {
-        const nameEl = document.getElementById('user-name');
-        const avatarEl = document.getElementById('user-avatar');
-        const welcomeEl = document.getElementById('welcome-name');
-
-        if (nameEl) nameEl.textContent = user.name;
-        if (avatarEl) avatarEl.textContent = user.name.charAt(0).toUpperCase();
-        if (welcomeEl) welcomeEl.textContent = user.name.split(' ')[0];
+        document.getElementById('user-name').textContent = user.name;
+        document.getElementById('user-avatar').textContent = user.name.charAt(0).toUpperCase();
+        document.getElementById('welcome-name').textContent = user.name.split(' ')[0];
     }
 }
 
@@ -47,73 +39,62 @@ function logout() {
     window.location.href = 'index.html';
 }
 
-// setup all operation forms
+// setup forms
 function setupOperations() {
-    document.getElementById('compare-form')
-        ?.addEventListener('submit', handleCompare);
-    document.getElementById('add-form')
-        ?.addEventListener('submit', handleAdd);
-    document.getElementById('subtract-form')
-        ?.addEventListener('submit', handleSubtract);
-    document.getElementById('divide-form')
-        ?.addEventListener('submit', handleDivide);
-    document.getElementById('convert-form')
-        ?.addEventListener('submit', handleConvert);
+    document.getElementById('compare-form')?.addEventListener('submit', handleCompare);
+    document.getElementById('add-form')?.addEventListener('submit', handleAdd);
+    document.getElementById('subtract-form')?.addEventListener('submit', handleSubtract);
+    document.getElementById('divide-form')?.addEventListener('submit', handleDivide);
+    document.getElementById('convert-form')?.addEventListener('submit', handleConvert);
 }
 
-// units for each measurement type
+// units
 const UNITS = {
     LENGTH: ['FEET', 'INCH', 'YARDS', 'CENTIMETER'],
     WEIGHT: ['KILOGRAM', 'GRAM', 'POUND'],
     VOLUME: ['LITRE', 'MILLILITRE', 'GALLON']
 };
 
-// update unit dropdowns when type changes
+// update units dynamically
 function updateUnits(operation) {
     const type = document.getElementById(`${operation}-type`).value;
     const units = UNITS[type];
 
-    // find all unit selects for this operation
-    const selects = document.querySelectorAll(`[id^="${operation}-unit"], [id="${operation}-from"], [id="${operation}-to"]`);
+    const selects = document.querySelectorAll(
+        `[id^="${operation}-unit"], [id="${operation}-from"], [id="${operation}-to"]`
+    );
 
     selects.forEach(select => {
         const currentVal = select.value;
         select.innerHTML = units.map(u =>
             `<option value="${u}">${u.charAt(0) + u.slice(1).toLowerCase()}</option>`
         ).join('');
-        // keep current value if still valid
         if (units.includes(currentVal)) select.value = currentVal;
     });
 }
 
-// build quantity object
+// helper
 function buildQuantity(value, unit, type) {
-    return { value: parseFloat(value), unit: unit, type: type };
+    return { value: parseFloat(value), unit, type };
 }
 
-// show result
+// UI helpers
 function showResult(boxId, value) {
     const box = document.getElementById(boxId);
-    if (box) {
-        const resultValue = box.querySelector('.result-value');
-        resultValue.textContent = value;
-        resultValue.style.color = 'var(--success)';
-        box.classList.add('show');
-    }
+    const resultValue = box.querySelector('.result-value');
+    resultValue.textContent = value;
+    resultValue.style.color = 'var(--success)';
+    box.classList.add('show');
 }
 
-// show error
 function showError(boxId, message) {
     const box = document.getElementById(boxId);
-    if (box) {
-        const resultValue = box.querySelector('.result-value');
-        resultValue.textContent = '❌ ' + message;
-        resultValue.style.color = 'var(--error)';
-        box.classList.add('show');
-    }
+    const resultValue = box.querySelector('.result-value');
+    resultValue.textContent = '❌ ' + message;
+    resultValue.style.color = 'var(--error)';
+    box.classList.add('show');
 }
 
-// set button loading state
 function setLoading(form, loading) {
     const btn = form.querySelector('button[type="submit"]');
     if (loading) {
@@ -125,15 +106,19 @@ function setLoading(form, loading) {
     }
 }
 
-// handle compare
+// ================= HANDLERS =================
+
 async function handleCompare(e) {
     e.preventDefault();
+
     const type = document.getElementById('compare-type').value;
+
     const q1 = buildQuantity(
         document.getElementById('compare-value1').value,
         document.getElementById('compare-unit1').value,
         type
     );
+
     const q2 = buildQuantity(
         document.getElementById('compare-value2').value,
         document.getElementById('compare-unit2').value,
@@ -144,7 +129,7 @@ async function handleCompare(e) {
     try {
         const result = await compareQuantities(q1, q2);
         showResult('compare-result', result ? '✅ Equal' : '❌ Not Equal');
-        loadHistory();
+        loadHistoryOptimized();
     } catch (error) {
         showError('compare-result', error.message);
     } finally {
@@ -152,18 +137,20 @@ async function handleCompare(e) {
     }
 }
 
-// handle add
 async function handleAdd(e) {
     e.preventDefault();
-    const type = document.getElementById('compare-type').value;
+
+    const type = document.getElementById('add-type').value;
+
     const q1 = buildQuantity(
-        document.getElementById('compare-value1').value,
-        document.getElementById('compare-unit1').value,
+        document.getElementById('add-value1').value,
+        document.getElementById('add-unit1').value,
         type
     );
+
     const q2 = buildQuantity(
-        document.getElementById('compare-value2').value,
-        document.getElementById('compare-unit2').value,
+        document.getElementById('add-value2').value,
+        document.getElementById('add-unit2').value,
         type
     );
 
@@ -171,7 +158,7 @@ async function handleAdd(e) {
     try {
         const result = await addQuantities(q1, q2);
         showResult('add-result', `${result.value} ${result.unit}`);
-        loadHistory();
+        loadHistoryOptimized();
     } catch (error) {
         showError('add-result', error.message);
     } finally {
@@ -179,18 +166,20 @@ async function handleAdd(e) {
     }
 }
 
-// handle subtract
 async function handleSubtract(e) {
     e.preventDefault();
-    const type = document.getElementById('compare-type').value;
+
+    const type = document.getElementById('subtract-type').value;
+
     const q1 = buildQuantity(
-        document.getElementById('compare-value1').value,
-        document.getElementById('compare-unit1').value,
+        document.getElementById('subtract-value1').value,
+        document.getElementById('subtract-unit1').value,
         type
     );
+
     const q2 = buildQuantity(
-        document.getElementById('compare-value2').value,
-        document.getElementById('compare-unit2').value,
+        document.getElementById('subtract-value2').value,
+        document.getElementById('subtract-unit2').value,
         type
     );
 
@@ -198,7 +187,7 @@ async function handleSubtract(e) {
     try {
         const result = await subtractQuantities(q1, q2);
         showResult('subtract-result', `${result.value} ${result.unit}`);
-        loadHistory();
+        loadHistoryOptimized();
     } catch (error) {
         showError('subtract-result', error.message);
     } finally {
@@ -206,18 +195,20 @@ async function handleSubtract(e) {
     }
 }
 
-// handle divide
 async function handleDivide(e) {
     e.preventDefault();
-    const type = document.getElementById('compare-type').value;
+
+    const type = document.getElementById('divide-type').value;
+
     const q1 = buildQuantity(
-        document.getElementById('compare-value1').value,
-        document.getElementById('compare-unit1').value,
+        document.getElementById('divide-value1').value,
+        document.getElementById('divide-unit1').value,
         type
     );
+
     const q2 = buildQuantity(
-        document.getElementById('compare-value2').value,
-        document.getElementById('compare-unit2').value,
+        document.getElementById('divide-value2').value,
+        document.getElementById('divide-unit2').value,
         type
     );
 
@@ -225,7 +216,7 @@ async function handleDivide(e) {
     try {
         const result = await divideQuantities(q1, q2);
         showResult('divide-result', result);
-        loadHistory();
+        loadHistoryOptimized();
     } catch (error) {
         showError('divide-result', error.message);
     } finally {
@@ -233,22 +224,24 @@ async function handleDivide(e) {
     }
 }
 
-// handle convert
 async function handleConvert(e) {
     e.preventDefault();
+
     const type = document.getElementById('convert-type').value;
+
     const q1 = buildQuantity(
         document.getElementById('convert-value').value,
         document.getElementById('convert-from').value,
         type
     );
+
     const targetUnit = document.getElementById('convert-to').value;
 
     setLoading(e.target, true);
     try {
         const result = await convertQuantity(q1, targetUnit);
         showResult('convert-result', `${result.value} ${result.unit}`);
-        loadHistory();
+        loadHistoryOptimized();
     } catch (error) {
         showError('convert-result', error.message);
     } finally {
@@ -256,33 +249,41 @@ async function handleConvert(e) {
     }
 }
 
-// load history table
-async function loadHistory() {
+// ================= HISTORY =================
+
+function formatDateTime(dateString) {
+    const date = new Date(dateString);
+
+    return date.toLocaleString('en-IN', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+    });
+}
+
+async function loadHistoryOptimized() {
     const tbody = document.getElementById('history-body');
     if (!tbody) return;
 
     try {
         const operations = ['COMPARE', 'ADD', 'SUBTRACT', 'DIVIDE', 'CONVERT'];
-        let allHistory = [];
 
-        for (const op of operations) {
-            const history = await getHistory(op);
-            if (history && history.length > 0) {
-                allHistory = [...allHistory, ...history];
-            }
-        }
+        const results = await Promise.all(
+            operations.map(op => getHistory(op))
+        );
 
-        // sort newest first
+        let allHistory = results.flat().filter(Boolean);
+
         allHistory.sort((a, b) => b.id - a.id);
-
-        // take last 10
         allHistory = allHistory.slice(0, 10);
 
         if (allHistory.length === 0) {
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="4" style="text-align:center;
-                        color: var(--text-muted); padding: 24px;">
+                    <td colspan="4" style="text-align:center; padding:24px;">
                         No history yet. Try an operation!
                     </td>
                 </tr>`;
@@ -291,24 +292,19 @@ async function loadHistory() {
 
         tbody.innerHTML = allHistory.map(item => `
             <tr>
-                <td>
-                    <span class="badge badge-success">
-                        ${item.operation}
-                    </span>
-                </td>
+                <td><span class="badge badge-success">${item.operation}</span></td>
                 <td>${item.measurementType}</td>
                 <td>${item.result || item.message || '-'}</td>
-                <td>${new Date(item.createdAt).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}</td>
+                <td>${formatDateTime(item.createdAt)}</td>
             </tr>
         `).join('');
 
     } catch (error) {
-        console.error('Failed to load history:', error);
+        console.error('History error:', error);
         tbody.innerHTML = `
             <tr>
-                <td colspan="4" style="text-align:center;
-                    color: var(--error); padding: 24px;">
-                    Failed to load history. Make sure you are logged in.
+                <td colspan="4" style="text-align:center; padding:24px;">
+                    Failed to load history
                 </td>
             </tr>`;
     }
