@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css/dashboard.css" />
   </head>
   <body class="dashboard-page">
+    <!-- Navbar -->
     <nav class="navbar">
       <div class="navbar-brand">⚖️ Quantity Measurement</div>
       <div class="navbar-right">
@@ -23,12 +24,15 @@
       </div>
     </nav>
 
+    <!-- Main Content -->
     <div class="dashboard-content">
+      <!-- Welcome -->
       <div class="welcome-section">
         <h2>Welcome , <span id="welcome-name">User</span>! 👋</h2>
         <p>Perform quantity measurements and conversions below.</p>
       </div>
 
+      <!-- Operations Grid -->
       <div class="operations-grid">
         <!-- Compare -->
         <div class="operation-card">
@@ -83,6 +87,7 @@
             <div class="operation-icon">➕</div>
             <div>
               <div class="operation-title">Add</div>
+              <div class="operation-subtitle">Add two quantities together</div>
             </div>
           </div>
 
@@ -127,6 +132,9 @@
             <div class="operation-icon">➖</div>
             <div>
               <div class="operation-title">Subtract</div>
+              <div class="operation-subtitle">
+                Subtract one quantity from another
+              </div>
             </div>
           </div>
 
@@ -171,6 +179,9 @@
             <div class="operation-icon">➗</div>
             <div>
               <div class="operation-title">Divide</div>
+              <div class="operation-subtitle">
+                Divide one quantity by another
+              </div>
             </div>
           </div>
 
@@ -215,6 +226,7 @@
             <div class="operation-icon">🔄</div>
             <div>
               <div class="operation-title">Convert</div>
+              <div class="operation-subtitle">Convert between units</div>
             </div>
           </div>
 
@@ -251,6 +263,41 @@
             <div class="result-value"></div>
           </div>
         </div>
+      </div>
+
+      <!-- History Section -->
+      <div class="history-section">
+        <div class="history-header">
+          <h3>📜 Recent History</h3>
+          <button
+            class="btn btn-secondary"
+            onclick="loadHistory()"
+            style="padding: 8px 16px; font-size: 0.85rem"
+          >
+            Refresh
+          </button>
+        </div>
+
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Operation</th>
+              <th>Type</th>
+              <th>Result</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody id="history-body">
+            <tr>
+              <td
+                colspan="4"
+                style="text-align: center; color: var(--text-muted)"
+              >
+                Loading history...
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
