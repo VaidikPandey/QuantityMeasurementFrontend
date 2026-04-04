@@ -61,9 +61,34 @@ function setupOperations() {
         ?.addEventListener('submit', handleConvert);
 }
 
+// units for each measurement type
+const UNITS = {
+    LENGTH: ['FEET', 'INCH', 'YARDS', 'CENTIMETER'],
+    WEIGHT: ['KILOGRAM', 'GRAM', 'POUND'],
+    VOLUME: ['LITRE', 'MILLILITRE', 'GALLON']
+};
+
+// update unit dropdowns when type changes
+function updateUnits(operation) {
+    const type = document.getElementById(`${operation}-type`).value;
+    const units = UNITS[type];
+
+    // find all unit selects for this operation
+    const selects = document.querySelectorAll(`[id^="${operation}-unit"], [id="${operation}-from"], [id="${operation}-to"]`);
+
+    selects.forEach(select => {
+        const currentVal = select.value;
+        select.innerHTML = units.map(u =>
+            `<option value="${u}">${u.charAt(0) + u.slice(1).toLowerCase()}</option>`
+        ).join('');
+        // keep current value if still valid
+        if (units.includes(currentVal)) select.value = currentVal;
+    });
+}
+
 // build quantity object
-function buildQuantity(value, unit) {
-    return { value: parseFloat(value), unit: unit, type: 'LENGTH' };
+function buildQuantity(value, unit, type) {
+    return { value: parseFloat(value), unit: unit, type: type };
 }
 
 // show result
@@ -103,13 +128,16 @@ function setLoading(form, loading) {
 // handle compare
 async function handleCompare(e) {
     e.preventDefault();
+    const type = document.getElementById('compare-type').value;
     const q1 = buildQuantity(
         document.getElementById('compare-value1').value,
-        document.getElementById('compare-unit1').value
+        document.getElementById('compare-unit1').value,
+        type
     );
     const q2 = buildQuantity(
         document.getElementById('compare-value2').value,
-        document.getElementById('compare-unit2').value
+        document.getElementById('compare-unit2').value,
+        type
     );
 
     setLoading(e.target, true);
@@ -127,13 +155,16 @@ async function handleCompare(e) {
 // handle add
 async function handleAdd(e) {
     e.preventDefault();
+    const type = document.getElementById('compare-type').value;
     const q1 = buildQuantity(
-        document.getElementById('add-value1').value,
-        document.getElementById('add-unit1').value
+        document.getElementById('compare-value1').value,
+        document.getElementById('compare-unit1').value,
+        type
     );
     const q2 = buildQuantity(
-        document.getElementById('add-value2').value,
-        document.getElementById('add-unit2').value
+        document.getElementById('compare-value2').value,
+        document.getElementById('compare-unit2').value,
+        type
     );
 
     setLoading(e.target, true);
@@ -151,13 +182,16 @@ async function handleAdd(e) {
 // handle subtract
 async function handleSubtract(e) {
     e.preventDefault();
+    const type = document.getElementById('compare-type').value;
     const q1 = buildQuantity(
-        document.getElementById('subtract-value1').value,
-        document.getElementById('subtract-unit1').value
+        document.getElementById('compare-value1').value,
+        document.getElementById('compare-unit1').value,
+        type
     );
     const q2 = buildQuantity(
-        document.getElementById('subtract-value2').value,
-        document.getElementById('subtract-unit2').value
+        document.getElementById('compare-value2').value,
+        document.getElementById('compare-unit2').value,
+        type
     );
 
     setLoading(e.target, true);
@@ -175,13 +209,16 @@ async function handleSubtract(e) {
 // handle divide
 async function handleDivide(e) {
     e.preventDefault();
+    const type = document.getElementById('compare-type').value;
     const q1 = buildQuantity(
-        document.getElementById('divide-value1').value,
-        document.getElementById('divide-unit1').value
+        document.getElementById('compare-value1').value,
+        document.getElementById('compare-unit1').value,
+        type
     );
     const q2 = buildQuantity(
-        document.getElementById('divide-value2').value,
-        document.getElementById('divide-unit2').value
+        document.getElementById('compare-value2').value,
+        document.getElementById('compare-unit2').value,
+        type
     );
 
     setLoading(e.target, true);
@@ -199,9 +236,11 @@ async function handleDivide(e) {
 // handle convert
 async function handleConvert(e) {
     e.preventDefault();
+    const type = document.getElementById('convert-type').value;
     const q1 = buildQuantity(
         document.getElementById('convert-value').value,
-        document.getElementById('convert-from').value
+        document.getElementById('convert-from').value,
+        type
     );
     const targetUnit = document.getElementById('convert-to').value;
 
