@@ -269,13 +269,26 @@
       <div class="history-section">
         <div class="history-header">
           <h3>📜 Recent History</h3>
-          <button
-            class="btn btn-secondary"
-            onclick="loadHistory()"
-            style="padding: 8px 16px; font-size: 0.85rem"
-          >
-            Refresh
-          </button>
+          <div style="display: flex; gap: 8px">
+            <button
+              class="btn btn-secondary"
+              onclick="loadHistoryOptimized()"
+              style="padding: 8px 16px; font-size: 0.85rem"
+            >
+              Refresh
+            </button>
+            <button
+              class="btn btn-secondary"
+              onclick="clearHistory()"
+              style="
+                padding: 8px 16px;
+                font-size: 0.85rem;
+                background: var(--error);
+              "
+            >
+              🗑️ Clear
+            </button>
+          </div>
         </div>
 
         <table class="history-table">

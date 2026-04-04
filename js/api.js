@@ -69,3 +69,13 @@ async function convertQuantity(q1, targetUnit) {
 async function getHistory(operation) {
     return await apiCall(`${CONFIG.ENDPOINTS.HISTORY}/${operation}`, 'GET');
 }
+
+// get current user's history only
+async function getMyHistory() {
+    return await apiCall(CONFIG.ENDPOINTS.MY_HISTORY, 'GET');
+}
+
+// clear current user's history
+async function clearMyHistory() {
+    return await apiCall(CONFIG.ENDPOINTS.CLEAR_HISTORY, 'DELETE');
+}

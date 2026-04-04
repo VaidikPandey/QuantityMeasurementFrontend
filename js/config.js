@@ -11,8 +11,9 @@ const CONFIG = {
         SUBTRACT: '/api/v1/quantities/subtract',
         DIVIDE: '/api/v1/quantities/divide',
         CONVERT: '/api/v1/quantities/convert',
-        HISTORY: '/api/v1/quantities/history/operation',
-    }
+        MY_HISTORY: '/api/v1/quantities/history/me',
+        CLEAR_HISTORY: '/api/v1/quantities/history/me',
+    },
 };
 
 // Theme Management

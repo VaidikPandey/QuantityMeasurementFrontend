@@ -269,18 +269,10 @@ async function loadHistoryOptimized() {
     if (!tbody) return;
 
     try {
-        const operations = ['COMPARE', 'ADD', 'SUBTRACT', 'DIVIDE', 'CONVERT'];
+        // get only current user's history
+        let allHistory = await getMyHistory();
 
-        const results = await Promise.all(
-            operations.map(op => getHistory(op))
-        );
-
-        let allHistory = results.flat().filter(Boolean);
-
-        allHistory.sort((a, b) => b.id - a.id);
-        allHistory = allHistory.slice(0, 10);
-
-        if (allHistory.length === 0) {
+        if (!allHistory || allHistory.length === 0) {
             tbody.innerHTML = `
                 <tr>
                     <td colspan="4" style="text-align:center; padding:24px;">
@@ -289,6 +281,9 @@ async function loadHistoryOptimized() {
                 </tr>`;
             return;
         }
+
+        // take last 10
+        allHistory = allHistory.slice(0, 10);
 
         tbody.innerHTML = allHistory.map(item => `
             <tr>
@@ -307,5 +302,15 @@ async function loadHistoryOptimized() {
                     Failed to load history
                 </td>
             </tr>`;
+    }
+}
+
+async function clearHistory() {
+    if (!confirm('Are you sure you want to clear your history?')) return;
+    try {
+        await clearMyHistory();
+        loadHistoryOptimized();
+    } catch (error) {
+        console.error('Failed to clear history:', error);
     }
 }
