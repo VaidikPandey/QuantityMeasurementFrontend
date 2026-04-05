@@ -81,6 +81,9 @@ QuantityMeasurementFrontend/
 | Category | Units |
 |----------|-------|
 | Length | `FEET`, `INCH`, `YARDS`, `CENTIMETER` |
+| Weight | `KILOGRAM`, `GRAM`, `POUND` |
+| Volume | `LITRE`, `MILLILITRE`, `GALLON` |
+| Temperature | `CELSIUS`, `FAHRENHEIT` |
 
 ---
 
