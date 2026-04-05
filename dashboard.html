@@ -1,5 +1,4 @@
 <!doctype html>
-
 <html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
@@ -9,7 +8,6 @@
     <link rel="stylesheet" href="css/dashboard.css" />
   </head>
   <body class="dashboard-page">
-    <!-- Navbar -->
     <nav class="navbar">
       <div class="navbar-brand">⚖️ Quantity Measurement</div>
       <div class="navbar-right">
@@ -24,15 +22,12 @@
       </div>
     </nav>
 
-    <!-- Main Content -->
     <div class="dashboard-content">
-      <!-- Welcome -->
       <div class="welcome-section">
         <h2>Welcome , <span id="welcome-name">User</span>! 👋</h2>
         <p>Perform quantity measurements and conversions below.</p>
       </div>
 
-      <!-- Operations Grid -->
       <div class="operations-grid">
         <!-- Compare -->
         <div class="operation-card">
@@ -45,7 +40,6 @@
               </div>
             </div>
           </div>
-
           <form id="compare-form">
             <div class="form-group">
               <label>Type</label>
@@ -53,9 +47,9 @@
                 <option value="LENGTH">Length</option>
                 <option value="WEIGHT">Weight</option>
                 <option value="VOLUME">Volume</option>
+                <option value="TEMPERATURE">Temperature</option>
               </select>
             </div>
-
             <div class="form-group">
               <label>First Quantity</label>
               <div style="display: flex; gap: 8px">
@@ -63,7 +57,6 @@
                 <select id="compare-unit1"></select>
               </div>
             </div>
-
             <div class="form-group">
               <label>Second Quantity</label>
               <div style="display: flex; gap: 8px">
@@ -71,10 +64,8 @@
                 <select id="compare-unit2"></select>
               </div>
             </div>
-
             <button type="submit" class="btn btn-primary">Compare</button>
           </form>
-
           <div class="result-box" id="compare-result">
             <div class="result-label">Result</div>
             <div class="result-value"></div>
@@ -90,7 +81,6 @@
               <div class="operation-subtitle">Add two quantities together</div>
             </div>
           </div>
-
           <form id="add-form">
             <div class="form-group">
               <label>Type</label>
@@ -98,9 +88,9 @@
                 <option value="LENGTH">Length</option>
                 <option value="WEIGHT">Weight</option>
                 <option value="VOLUME">Volume</option>
+                <option value="TEMPERATURE">Temperature</option>
               </select>
             </div>
-
             <div class="form-group">
               <label>First Quantity</label>
               <div style="display: flex; gap: 8px">
@@ -108,7 +98,6 @@
                 <select id="add-unit1"></select>
               </div>
             </div>
-
             <div class="form-group">
               <label>Second Quantity</label>
               <div style="display: flex; gap: 8px">
@@ -116,10 +105,8 @@
                 <select id="add-unit2"></select>
               </div>
             </div>
-
             <button type="submit" class="btn btn-primary">Add</button>
           </form>
-
           <div class="result-box" id="add-result">
             <div class="result-label">Result</div>
             <div class="result-value"></div>
@@ -137,7 +124,6 @@
               </div>
             </div>
           </div>
-
           <form id="subtract-form">
             <div class="form-group">
               <label>Type</label>
@@ -145,9 +131,9 @@
                 <option value="LENGTH">Length</option>
                 <option value="WEIGHT">Weight</option>
                 <option value="VOLUME">Volume</option>
+                <option value="TEMPERATURE">Temperature</option>
               </select>
             </div>
-
             <div class="form-group">
               <label>First Quantity</label>
               <div style="display: flex; gap: 8px">
@@ -155,7 +141,6 @@
                 <select id="subtract-unit1"></select>
               </div>
             </div>
-
             <div class="form-group">
               <label>Second Quantity</label>
               <div style="display: flex; gap: 8px">
@@ -163,10 +148,8 @@
                 <select id="subtract-unit2"></select>
               </div>
             </div>
-
             <button type="submit" class="btn btn-primary">Subtract</button>
           </form>
-
           <div class="result-box" id="subtract-result">
             <div class="result-label">Result</div>
             <div class="result-value"></div>
@@ -184,7 +167,6 @@
               </div>
             </div>
           </div>
-
           <form id="divide-form">
             <div class="form-group">
               <label>Type</label>
@@ -192,9 +174,9 @@
                 <option value="LENGTH">Length</option>
                 <option value="WEIGHT">Weight</option>
                 <option value="VOLUME">Volume</option>
+                <option value="TEMPERATURE">Temperature</option>
               </select>
             </div>
-
             <div class="form-group">
               <label>First Quantity</label>
               <div style="display: flex; gap: 8px">
@@ -202,7 +184,6 @@
                 <select id="divide-unit1"></select>
               </div>
             </div>
-
             <div class="form-group">
               <label>Second Quantity</label>
               <div style="display: flex; gap: 8px">
@@ -210,10 +191,8 @@
                 <select id="divide-unit2"></select>
               </div>
             </div>
-
             <button type="submit" class="btn btn-primary">Divide</button>
           </form>
-
           <div class="result-box" id="divide-result">
             <div class="result-label">Result</div>
             <div class="result-value"></div>
@@ -229,7 +208,6 @@
               <div class="operation-subtitle">Convert between units</div>
             </div>
           </div>
-
           <form id="convert-form">
             <div class="form-group">
               <label>Type</label>
@@ -237,27 +215,23 @@
                 <option value="LENGTH">Length</option>
                 <option value="WEIGHT">Weight</option>
                 <option value="VOLUME">Volume</option>
+                <option value="TEMPERATURE">Temperature</option>
               </select>
             </div>
-
             <div class="form-group">
               <label>Value</label>
               <input type="number" id="convert-value" step="any" required />
             </div>
-
             <div class="form-group">
               <label>From</label>
               <select id="convert-from"></select>
             </div>
-
             <div class="form-group">
               <label>To</label>
               <select id="convert-to"></select>
             </div>
-
             <button type="submit" class="btn btn-primary">Convert</button>
           </form>
-
           <div class="result-box" id="convert-result">
             <div class="result-label">Result</div>
             <div class="result-value"></div>
@@ -283,7 +257,6 @@
             </button>
           </div>
         </div>
-
         <table class="history-table">
           <thead>
             <tr>

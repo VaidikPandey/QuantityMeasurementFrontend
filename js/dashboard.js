@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadHistoryOptimized();
 });
 
-// load user info
 function loadUserInfo() {
     const user = getUser();
     if (user) {
@@ -33,29 +32,29 @@ function loadUserInfo() {
     }
 }
 
-// logout
 function logout() {
     removeToken();
     window.location.href = 'index.html';
 }
 
-// setup forms
 function setupOperations() {
     document.getElementById('compare-form')?.addEventListener('submit', handleCompare);
     document.getElementById('add-form')?.addEventListener('submit', handleAdd);
     document.getElementById('subtract-form')?.addEventListener('submit', handleSubtract);
     document.getElementById('divide-form')?.addEventListener('submit', handleDivide);
     document.getElementById('convert-form')?.addEventListener('submit', handleConvert);
+
+    // initialize all unit dropdowns on page load
+    ['compare', 'add', 'subtract', 'divide', 'convert'].forEach(op => updateUnits(op));
 }
 
-// units
 const UNITS = {
     LENGTH: ['FEET', 'INCH', 'YARDS', 'CENTIMETER'],
     WEIGHT: ['KILOGRAM', 'GRAM', 'POUND'],
-    VOLUME: ['LITRE', 'MILLILITRE', 'GALLON']
+    VOLUME: ['LITRE', 'MILLILITRE', 'GALLON'],
+    TEMPERATURE: ['CELSIUS', 'FAHRENHEIT']
 };
 
-// update units dynamically
 function updateUnits(operation) {
     const type = document.getElementById(`${operation}-type`).value;
     const units = UNITS[type];
@@ -73,12 +72,10 @@ function updateUnits(operation) {
     });
 }
 
-// helper
 function buildQuantity(value, unit, type) {
     return { value: parseFloat(value), unit, type };
 }
 
-// UI helpers
 function showResult(boxId, value) {
     const box = document.getElementById(boxId);
     const resultValue = box.querySelector('.result-value');
@@ -110,21 +107,9 @@ function setLoading(form, loading) {
 
 async function handleCompare(e) {
     e.preventDefault();
-
     const type = document.getElementById('compare-type').value;
-
-    const q1 = buildQuantity(
-        document.getElementById('compare-value1').value,
-        document.getElementById('compare-unit1').value,
-        type
-    );
-
-    const q2 = buildQuantity(
-        document.getElementById('compare-value2').value,
-        document.getElementById('compare-unit2').value,
-        type
-    );
-
+    const q1 = buildQuantity(document.getElementById('compare-value1').value, document.getElementById('compare-unit1').value, type);
+    const q2 = buildQuantity(document.getElementById('compare-value2').value, document.getElementById('compare-unit2').value, type);
     setLoading(e.target, true);
     try {
         const result = await compareQuantities(q1, q2);
@@ -139,21 +124,9 @@ async function handleCompare(e) {
 
 async function handleAdd(e) {
     e.preventDefault();
-
     const type = document.getElementById('add-type').value;
-
-    const q1 = buildQuantity(
-        document.getElementById('add-value1').value,
-        document.getElementById('add-unit1').value,
-        type
-    );
-
-    const q2 = buildQuantity(
-        document.getElementById('add-value2').value,
-        document.getElementById('add-unit2').value,
-        type
-    );
-
+    const q1 = buildQuantity(document.getElementById('add-value1').value, document.getElementById('add-unit1').value, type);
+    const q2 = buildQuantity(document.getElementById('add-value2').value, document.getElementById('add-unit2').value, type);
     setLoading(e.target, true);
     try {
         const result = await addQuantities(q1, q2);
@@ -168,21 +141,9 @@ async function handleAdd(e) {
 
 async function handleSubtract(e) {
     e.preventDefault();
-
     const type = document.getElementById('subtract-type').value;
-
-    const q1 = buildQuantity(
-        document.getElementById('subtract-value1').value,
-        document.getElementById('subtract-unit1').value,
-        type
-    );
-
-    const q2 = buildQuantity(
-        document.getElementById('subtract-value2').value,
-        document.getElementById('subtract-unit2').value,
-        type
-    );
-
+    const q1 = buildQuantity(document.getElementById('subtract-value1').value, document.getElementById('subtract-unit1').value, type);
+    const q2 = buildQuantity(document.getElementById('subtract-value2').value, document.getElementById('subtract-unit2').value, type);
     setLoading(e.target, true);
     try {
         const result = await subtractQuantities(q1, q2);
@@ -197,21 +158,9 @@ async function handleSubtract(e) {
 
 async function handleDivide(e) {
     e.preventDefault();
-
     const type = document.getElementById('divide-type').value;
-
-    const q1 = buildQuantity(
-        document.getElementById('divide-value1').value,
-        document.getElementById('divide-unit1').value,
-        type
-    );
-
-    const q2 = buildQuantity(
-        document.getElementById('divide-value2').value,
-        document.getElementById('divide-unit2').value,
-        type
-    );
-
+    const q1 = buildQuantity(document.getElementById('divide-value1').value, document.getElementById('divide-unit1').value, type);
+    const q2 = buildQuantity(document.getElementById('divide-value2').value, document.getElementById('divide-unit2').value, type);
     setLoading(e.target, true);
     try {
         const result = await divideQuantities(q1, q2);
@@ -226,17 +175,9 @@ async function handleDivide(e) {
 
 async function handleConvert(e) {
     e.preventDefault();
-
     const type = document.getElementById('convert-type').value;
-
-    const q1 = buildQuantity(
-        document.getElementById('convert-value').value,
-        document.getElementById('convert-from').value,
-        type
-    );
-
+    const q1 = buildQuantity(document.getElementById('convert-value').value, document.getElementById('convert-from').value, type);
     const targetUnit = document.getElementById('convert-to').value;
-
     setLoading(e.target, true);
     try {
         const result = await convertQuantity(q1, targetUnit);
@@ -250,19 +191,6 @@ async function handleConvert(e) {
 }
 
 // ================= HISTORY =================
-
-function formatDateTime(dateString) {
-    const date = new Date(dateString);
-
-    return date.toLocaleString('en-IN', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true
-    });
-}
 
 async function loadHistoryOptimized() {
     const tbody = document.getElementById('history-body');
