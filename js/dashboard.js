@@ -269,20 +269,18 @@ async function loadHistoryOptimized() {
     if (!tbody) return;
 
     try {
-        // get only current user's history
         let allHistory = await getMyHistory();
 
         if (!allHistory || allHistory.length === 0) {
             tbody.innerHTML = `
                 <tr>
-                    <td colspan="4" style="text-align:center; padding:24px;">
+                    <td colspan="3" style="text-align:center; padding:24px;">
                         No history yet. Try an operation!
                     </td>
                 </tr>`;
             return;
         }
 
-        // take last 10
         allHistory = allHistory.slice(0, 10);
 
         tbody.innerHTML = allHistory.map(item => `
@@ -290,7 +288,6 @@ async function loadHistoryOptimized() {
                 <td><span class="badge badge-success">${item.operation}</span></td>
                 <td>${item.measurementType}</td>
                 <td>${item.result || item.message || '-'}</td>
-                <td>${formatDateTime(item.createdAt)}</td>
             </tr>
         `).join('');
 
@@ -298,7 +295,7 @@ async function loadHistoryOptimized() {
         console.error('History error:', error);
         tbody.innerHTML = `
             <tr>
-                <td colspan="4" style="text-align:center; padding:24px;">
+                <td colspan="3" style="text-align:center; padding:24px;">
                     Failed to load history
                 </td>
             </tr>`;
