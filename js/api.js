@@ -7,7 +7,6 @@ async function apiCall(endpoint, method = 'GET', body = null) {
         'Content-Type': 'application/json',
     };
 
-    // add token if available
     if (token) {
         headers['Authorization'] = `Bearer ${token}`;
     }
@@ -21,13 +20,12 @@ async function apiCall(endpoint, method = 'GET', body = null) {
     const response = await fetch(CONFIG.BASE_URL + endpoint, options);
 
     if (response.status === 302 || response.status === 401 || response.status === 403) {
-        // token expired or invalid - redirect to login
         removeToken();
         window.location.href = 'index.html';
         return;
     }
 
-    const data = await response.json();
+    const text = await response.text();
     const data = text ? JSON.parse(text) : {};
 
     if (!response.ok) {
