@@ -4,6 +4,15 @@ A vanilla HTML/CSS/JS frontend for the Quantity Measurement App backend. Feature
 
 ---
 
+## 🌐 Live Demo
+
+| Service | URL |
+|---------|-----|
+| 🖥️ Frontend | [quantitymeasurement-app.netlify.app](https://quantitymeasurement-app.netlify.app) |
+| ⚙️ Backend API | [quantitymeasurementapp-production-7653.up.railway.app](https://quantitymeasurementapp-production-7653.up.railway.app) |
+
+---
+
 ## 🚀 Tech Stack
 
 ![HTML5](https://img.shields.io/badge/HTML-5-orange?style=flat-square)
