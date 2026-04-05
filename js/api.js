@@ -28,6 +28,7 @@ async function apiCall(endpoint, method = 'GET', body = null) {
     }
 
     const data = await response.json();
+    const data = text ? JSON.parse(text) : {};
 
     if (!response.ok) {
         throw new Error(data.message || 'Something went wrong');
